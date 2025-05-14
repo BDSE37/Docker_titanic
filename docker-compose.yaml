@@ -1,0 +1,71 @@
+services:
+  mysql_titanic:
+    image: mysql:8.0
+    container_name: container_mysql_titanic
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DB}
+    ports:
+      - "12345:3306"
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    networks:
+      - titanic-network
+    volumes:
+      - mysql_titanic_data:/var/lib/mysql
+  container_db_init:
+    build:
+      context: ./db_mysql
+      dockerfile: Dockerfile
+    depends_on:
+      mysql_titanic:
+        condition: service_healthy
+    environment:
+      MYSQL_HOST: mysql_titanic
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DB}
+    networks:
+      - titanic-network
+  flask_app:
+    build:
+      context: .
+      dockerfile: flask_app/Dockerfile
+    volumes:
+      - ./db_mysql:/app/db_mysql
+    container_name: container_flask
+    ports:
+      - "12456:5000"
+    env_file: .env
+    networks:
+      - titanic-network
+    depends_on:
+      mysql_titanic:
+        condition: service_healthy
+    environment:
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DB}
+  nginx:
+    image: nginx:alpine
+    container_name: nginx_web
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - flask_app
+    networks:
+      - titanic-network
+
+volumes:
+  mysql_titanic_data:
+
+
+networks:
+  titanic-network:
+    driver: bridge

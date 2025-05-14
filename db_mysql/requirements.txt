@@ -1,0 +1,7 @@
+mysql-connector-python
+pandas
+tqdm
+loguru
+python-dotenv
+flask==2.3.3
+gunicorn

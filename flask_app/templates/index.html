@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>Titanic data</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+  <style>
+    body {
+      margin: 0;
+      background-color: #000;
+    }
+
+    .fade-in {
+      width: 100%;
+      max-width: 100%;
+      opacity: 0;
+      animation: fadeIn 2s ease-in-out forwards;
+      cursor: pointer;
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
+</head>
+
+
+<div style="
+  position: fixed; 
+  top: 0; left: 0; 
+  width: 100%; 
+  background-color: #fff; 
+  z-index: 1000; 
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+  padding: 10px 40px;">
+  <div style="display: flex; align-items: center; justify-content: space-between;"></div>
+  
+
+  <img src="{{ url_for('static', filename='titanic.jpg') }}" style="height: 60px; margin-right: 50px;" alt="Titanic Image">
+  <a href="{{ url_for('index') }}"
+    style="text-decoration: none; color: black; font-size: 24px; font-weight: bold; font-family: 'Oswald', sans-serif; padding: 10px 10px;">
+      HOME
+  </a>
+  <a href="{{ url_for('table') }}"
+    style="text-decoration: none; color: black; font-size: 24px; font-weight: bold; font-family: 'Oswald', sans-serif;">
+      Data Info
+  </a>
+
+</div>
+
+<body>
+    <a href="{{ url_for('table') }}">
+        <img class="fade-in" src="{{ url_for('static', filename='cover.png') }}" alt="點擊進入圖表頁面">
+    </a>
+</body>
+</html>

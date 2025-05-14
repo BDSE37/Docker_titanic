@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>ALL TITANIC PASSENGER DATA</title>
+
+
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/scroller/2.3.0/css/scroller.dataTables.min.css">
+
+  <style>
+    body {
+      background-color: #f3f3f3;
+      font-family: 'Oswald', sans-serif;
+      padding: 100px 40px 40px;
+    }
+    .navbar {
+      background-color: #ffffff;
+      padding: 16px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+    }
+    .nav-logo a {
+      font-size: 24px;
+      font-weight: bold;
+      text-decoration: none;
+      color: #333;
+    }
+    .nav-image img {
+      height: 40px;
+      width: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: #fff;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    th, td {
+      padding: 12px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background-color: #333;
+      color: #fff;
+      font-size: 16px;
+      letter-spacing: 0.5px;
+    }
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+    td {
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+
+<body>
+
+
+<div class="navbar">
+  <div class="nav-image">
+    <img src="{{ url_for('static', filename='titanic.jpg') }}" alt="Titanic Image">
+  </div>
+  <div class="nav-logo">
+    <a href="{{ url_for('index') }}">HOME</a> |
+    <a href="{{ url_for('table') }}">Data Info</a>
+  </div>
+</div>
+
+
+<div class="wrap">
+  <table id="titanic-table" class="display">
+    <thead>
+      <tr>
+        <th>PassengerId</th>
+        <th>Pclass</th>
+        <th>Name</th>
+        <th>Sex</th>
+        <th>Age</th>
+        <th>SibSp</th>
+        <th>Parch</th>
+        <th>Ticket</th>
+        <th>Fare</th>
+        <th>Cabin</th>
+        <th>Embarked</th>
+        <th>Survived</th>
+      </tr>
+    </thead>
+  </table>
+</div>
+
+
+<div style="text-align: center; margin-top: 30px; font-size: 14px; color: #777;">
+  Design by <strong>BDSE37 GROUP1</strong>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/scroller/2.3.0/js/dataTables.scroller.min.js"></script>
+
+
+<script>
+  $(document).ready(function () {
+    $('#titanic-table').DataTable({
+      serverSide: true,
+      processing: true,
+      ajax: {
+        url: "/api/passenger-data",
+        data: function (d) {
+          console.log(d);
+        }
+      },
+      pageLength: 50,
+      lengthMenu: [10, 25, 50, 100, 250, 500, 1000],
+      order: [[0, "asc"]],
+      columns: [
+        { data: "PassengerId" },
+        { data: "Pclass" },
+        { data: "Name" },
+        { data: "Sex" },
+        { data: "Age" },
+        { data: "SibSp" },
+        { data: "Parch" },
+        { data: "Ticket" },
+        { data: "Fare" },
+        { data: "Cabin" },
+        { data: "Embarked" },
+        { data: "Survived" }
+      ]
+    });
+  });
+</script>
+
+</body>
+</html>
+
